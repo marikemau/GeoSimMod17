@@ -1,10 +1,18 @@
-patches-own [asthetic-quality]
+patches-own [
+  asthetic-quality
+]
+
+breed [centers center]
+breed [residents resident]
 
 to setup
   clear-all
   resize-world 0 80 0 0 ;; 1D model -> height = 1
   ask patches [setup-greenbelt]
   ask patches [setup-asthetic-quality]
+
+  create-centers 1 [setxy 0 0 set color white set shape "house"]
+
   reset-ticks
 end
 
@@ -13,9 +21,9 @@ to setup-greenbelt
   if pxcor >= (greenbelt-position - (greenbelt-width / 2)) and pxcor <= (greenbelt-position + (greenbelt-width / 2)) [ set pcolor green ]
 end
 
-;; set random asthetic quality from 0 to 1
+;; TODO: change to distance center
 to setup-asthetic-quality
-  set asthetic-quality random-float 1
+  set asthetic-quality distancexy 0 0 * 0.5
 end
 
 to go
@@ -92,7 +100,7 @@ greenbelt-position
 greenbelt-position
 0
 80
-54.0
+58.0
 1
 1
 NIL
@@ -109,6 +117,21 @@ greenbelt-width
 20
 16.0
 2
+1
+NIL
+HORIZONTAL
+
+SLIDER
+28
+211
+200
+244
+available-locations
+available-locations
+0
+80
+10.0
+1
 1
 NIL
 HORIZONTAL
