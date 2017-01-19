@@ -31,15 +31,12 @@ to setup-asthetic-quality
 end
 
 to go
-  if (80 - count residents - greenbelt-width - available-locations) = 0 [
+  if (count patches - 1 - count residents - greenbelt-width - available-locations) = 0 [
     stop
   ]
-
-
+  ;; selects random patches and places a turtle on the one with the highest astthetic-quality
   let randomPatches n-of available-locations patches with [greenbelt = false and count turtles-here = 0]
-
   ask min-one-of randomPatches [asthetic-quality] [sprout-residents 1]
-
   tick
 end
 @#$#@#$#@
@@ -126,9 +123,9 @@ SLIDER
 181
 greenbelt-width
 greenbelt-width
-0
-20
-14.0
+1
+21
+1.0
 2
 1
 NIL
