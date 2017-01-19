@@ -31,7 +31,11 @@ to setup-asthetic-quality
 end
 
 to go
+  let randomPatches n-of available-locations patches with [greenbelt = false and count turtles-here = 0]
 
+  ask min-one-of randomPatches [asthetic-quality] [sprout-residents 1]
+
+  tick
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -48,8 +52,8 @@ GRAPHICS-WINDOW
 1
 1
 0
-1
-1
+0
+0
 1
 0
 80
@@ -85,7 +89,7 @@ BUTTON
 68
 go
 go
-NIL
+T
 1
 T
 OBSERVER
@@ -126,10 +130,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-28
-211
-200
-244
+18
+198
+190
+231
 available-locations
 available-locations
 0
