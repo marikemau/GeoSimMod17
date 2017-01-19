@@ -31,6 +31,11 @@ to setup-asthetic-quality
 end
 
 to go
+  if (80 - count residents - greenbelt-width - available-locations) = 0 [
+    stop
+  ]
+
+
   let randomPatches n-of available-locations patches with [greenbelt = false and count turtles-here = 0]
 
   ask min-one-of randomPatches [asthetic-quality] [sprout-residents 1]
@@ -108,7 +113,7 @@ greenbelt-position
 greenbelt-position
 0
 80
-50.0
+49.0
 1
 1
 NIL
@@ -123,7 +128,7 @@ greenbelt-width
 greenbelt-width
 0
 20
-8.0
+14.0
 2
 1
 NIL
@@ -138,7 +143,7 @@ available-locations
 available-locations
 0
 80
-10.0
+11.0
 1
 1
 NIL
