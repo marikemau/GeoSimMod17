@@ -38,6 +38,7 @@ to go
 
   let randomPatches n-of available-locations patches with [greenbelt = false and count turtles-here = 0]
 
+  ;; TODO: add 10 patches for each tick
   ask min-one-of randomPatches [asthetic-quality] [sprout-residents 1]
 
   tick
@@ -143,7 +144,7 @@ available-locations
 available-locations
 0
 80
-58.0
+15.0
 1
 1
 NIL
