@@ -1,5 +1,6 @@
 patches-own [
   asthetic-quality
+  greenbelt
 ]
 
 breed [centers center]
@@ -8,6 +9,7 @@ breed [residents resident]
 to setup
   clear-all
   resize-world 0 80 0 0 ;; 1D model -> height = 1
+  ask patches [set greenbelt false]
   ask patches [setup-greenbelt]
   ask patches [setup-asthetic-quality]
 
@@ -18,7 +20,7 @@ end
 
 ;; set greenbelt patches
 to setup-greenbelt
-  if pxcor >= (greenbelt-position - (greenbelt-width / 2)) and pxcor <= (greenbelt-position + (greenbelt-width / 2)) [ set pcolor green ]
+  if pxcor >= (greenbelt-position - (greenbelt-width / 2)) and pxcor <= (greenbelt-position + (greenbelt-width / 2)) [ set pcolor green set greenbelt true]
 end
 
 ;; TODO: change to distance center
