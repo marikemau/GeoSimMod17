@@ -1,6 +1,8 @@
+extensions [gis]
+globals [greenbelt]
+
 patches-own [
   asthetic-quality
-  greenbelt
   inside
 ]
 
@@ -10,20 +12,33 @@ breed [residents resident]
 to setup
   clear-all
   resize-world 0 30 0 80 ;; 1D model -> height = 1
-  ask patches [set greenbelt false set inside true]
-  ask patches [setup-greenbelt]
   ask patches [setup-asthetic-quality]
+  ca
+  set greenbelt gis:load-dataset "data/greenbelt.shp"
+  gis:set-world-envelope gis:envelope-of greenbelt
+  gis:set-drawing-color white
+  gis:draw greenbelt 1
 
   create-centers 1 [setxy 0 0 set color white set shape "house"]
 
   reset-ticks
 end
 
-;; set greenbelt patches
-to setup-greenbelt
-  if pxcor >= (greenbelt-position - (greenbelt-width / 2)) and pxcor <= (greenbelt-position + (greenbelt-width / 2)) [ set pcolor green set greenbelt true]
-  if pxcor >= (greenbelt-position - (greenbelt-width / 2)) [ set inside false]
+;; method to create greenbelt patches on basis of the shp
+to setup-greenbelt-area
+  ask patches [ set pcolor black set inside false]
+  ask patches gis:intersecting greenbelt
+  [ set pcolor green set inside true]
 end
+
+
+
+
+;; set greenbelt patches
+;to setup-greenbelt
+;  if pxcor >= (greenbelt-position - (greenbelt-width / 2)) and pxcor <= (greenbelt-position + (greenbelt-width / 2)) [ set pcolor green set greenbelt true]
+;  if pxcor >= (greenbelt-position - (greenbelt-width / 2)) [ set inside false]
+;end
 
 ;; TODO: change to distance center
 to setup-asthetic-quality
@@ -31,18 +46,19 @@ to setup-asthetic-quality
 end
 
 to go
-  if (900 - count residents - greenbelt-width - available-locations) = 0 [
+  ;; TODO revisit if statement: removed greenbelt width
+  if (900 - count residents - available-locations) = 0 [
     stop
   ]
 
-
-  let randomPatches n-of available-locations patches with [greenbelt = false and count turtles-here = 0]
+  let randomPatches n-of available-locations patches with [inside = false and count turtles-here = 0]
 
   ;; TODO: add 10 patches for each tick
   ask min-one-of randomPatches [asthetic-quality] [sprout-residents 1]
 
   tick
 end
+
 @#$#@#$#@
 GRAPHICS-WINDOW
 200
@@ -114,41 +130,28 @@ available-locations
 available-locations
 0
 80
-15.0
+7.0
 1
 1
 NIL
 HORIZONTAL
 
-SLIDER
-16
-124
-188
-157
-greenbelt-width
-greenbelt-width
-0
+BUTTON
 20
-20.0
-2
-1
+84
+168
+117
+setup greenbelt
+setup-greenbelt-area
 NIL
-HORIZONTAL
-
-SLIDER
-18
-161
-190
-194
-greenbelt-position
-greenbelt-position
-0
-80
-40.0
 1
-1
+T
+OBSERVER
 NIL
-HORIZONTAL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 ## WHAT IS IT?

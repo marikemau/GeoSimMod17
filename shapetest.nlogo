@@ -1,70 +1,37 @@
-patches-own [
-  asthetic-quality
-  greenbelt
-  inside
-]
-
-breed [centers center]
-breed [residents resident]
+extensions [gis]
+globals [view]
 
 to setup
-  clear-all
-  resize-world 0 30 0 80 ;; 1D model -> height = 1
-  ask patches [set greenbelt false set inside true]
-  ask patches [setup-greenbelt]
-  ask patches [setup-asthetic-quality]
+  ca
+  set view gis:load-dataset "data/greenbelt.shp"
 
-  create-centers 1 [setxy 0 0 set color white set shape "house"]
+  gis:set-world-envelope-ds gis:envelope-of view
+  gis:set-drawing-color green
+  gis:draw view 10
 
-  reset-ticks
-end
-
-;; set greenbelt patches
-to setup-greenbelt
-  if pxcor >= (greenbelt-position - (greenbelt-width / 2)) and pxcor <= (greenbelt-position + (greenbelt-width / 2)) [ set pcolor green set greenbelt true]
-  if pxcor >= (greenbelt-position - (greenbelt-width / 2)) [ set inside false]
-end
-
-;; TODO: change to distance center
-to setup-asthetic-quality
-  set asthetic-quality distancexy 0 0 * 0.5
-end
-
-to go
-  if (900 - count residents - greenbelt-width - available-locations) = 0 [
-    stop
-  ]
-
-
-  let randomPatches n-of available-locations patches with [greenbelt = false and count turtles-here = 0]
-
-  ;; TODO: add 10 patches for each tick
-  ask min-one-of randomPatches [asthetic-quality] [sprout-residents 1]
-
-  tick
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-200
+210
 10
-456
-667
+647
+448
 -1
 -1
-8.0
+13.0
 1
 10
 1
 1
 1
 0
-0
-0
 1
-0
-30
-0
-80
+1
+1
+-16
+16
+-16
+16
 0
 0
 1
@@ -72,11 +39,11 @@ ticks
 30.0
 
 BUTTON
-10
-35
-76
-68
-NIL
+55
+38
+128
+71
+setup
 setup
 NIL
 1
@@ -88,72 +55,10 @@ NIL
 NIL
 1
 
-BUTTON
-96
-35
-159
-68
-go
-go
-T
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-SLIDER
-18
-198
-190
-231
-available-locations
-available-locations
-0
-80
-15.0
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-16
-124
-188
-157
-greenbelt-width
-greenbelt-width
-0
-20
-20.0
-2
-1
-NIL
-HORIZONTAL
-
-SLIDER
-18
-161
-190
-194
-greenbelt-position
-greenbelt-position
-0
-80
-40.0
-1
-1
-NIL
-HORIZONTAL
-
 @#$#@#$#@
 ## WHAT IS IT?
 
-This model shows the distribution of residents inside of a greenbelt depending on a distance to a service center and a random asthetic quality of each patch
+(a general understanding of what the model is trying to show or explain)
 
 ## HOW IT WORKS
 
