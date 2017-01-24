@@ -1,4 +1,5 @@
 patches-own [
+  distance-to-center
   asthetic-quality
   greenbelt
   inside
@@ -9,12 +10,15 @@ breed [residents resident]
 
 to setup
   clear-all
-  resize-world 0 30 0 80 ;; 1D model -> height = 1
+  resize-world 0 80 0 80 ;; 1D model -> height = 1
   ask patches [set greenbelt false set inside true]
   ask patches [setup-greenbelt]
   ask patches [setup-asthetic-quality]
 
-  create-centers 1 [setxy 0 0 set color white set shape "house"]
+  ;;ask one-of patches with [inside = true] [sprout-centers 1 [set color white set shape "house"]]
+  create-centers 1 [setxy 0 (world-height / 2) set color white set shape "house"]
+
+  ask patches [setup-distance]
 
   reset-ticks
 end
@@ -25,21 +29,30 @@ to setup-greenbelt
   if pxcor >= (greenbelt-position - (greenbelt-width / 2)) [ set inside false]
 end
 
-;; TODO: change to distance center
 to setup-asthetic-quality
-  set asthetic-quality distancexy 0 0 * 0.5
+  set asthetic-quality random-float 1
+end
+
+to setup-distance
+  set distance-to-center distance min-one-of centers [distance myself]
 end
 
 to go
-  if (900 - count residents - greenbelt-width - available-locations) = 0 [
+  if (count patches - count residents - count centers - (greenbelt-width * world-height) - available-locations) = 0 [
     stop
   ]
-
 
   let randomPatches n-of available-locations patches with [greenbelt = false and count turtles-here = 0]
 
   ;; TODO: add 10 patches for each tick
-  ask min-one-of randomPatches [asthetic-quality] [sprout-residents 1]
+  ask max-one-of randomPatches [asthetic-quality] [sprout-residents 1]
+
+  ;; add new center each 10 timesteps
+  if ticks mod 10 = 0 [
+    ask one-of patches with [inside = true and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]
+    ;; recalculate distance
+    ask patches [setup-distance]
+  ]
 
   tick
 end
@@ -47,7 +60,7 @@ end
 GRAPHICS-WINDOW
 200
 10
-456
+856
 667
 -1
 -1
@@ -62,7 +75,7 @@ GRAPHICS-WINDOW
 0
 1
 0
-30
+80
 0
 80
 0
@@ -106,6 +119,36 @@ NIL
 1
 
 SLIDER
+19
+101
+191
+134
+greenbelt-position
+greenbelt-position
+0
+world-width
+42.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+18
+148
+190
+181
+greenbelt-width
+greenbelt-width
+1
+21
+7.0
+2
+1
+NIL
+HORIZONTAL
+
+SLIDER
 18
 198
 190
@@ -114,37 +157,7 @@ available-locations
 available-locations
 0
 80
-15.0
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-16
-124
-188
-157
-greenbelt-width
-greenbelt-width
-0
-20
-20.0
-2
-1
-NIL
-HORIZONTAL
-
-SLIDER
-18
-161
-190
-194
-greenbelt-position
-greenbelt-position
-0
-80
-40.0
+9.0
 1
 1
 NIL
