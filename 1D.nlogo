@@ -36,14 +36,14 @@ to go
   ]
   ;; selects random patches and places a turtle on the one with the highest astthetic-quality
   let randomPatches n-of available-locations patches with [greenbelt = false and count turtles-here = 0]
-  ask min-one-of randomPatches [asthetic-quality] [sprout-residents 1]
+  ask min-one-of randomPatches [asthetic-quality] [sprout-residents 1 [set shape "person"] set pcolor white]
   tick
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-210
+95
 10
-1271
+1156
 32
 -1
 -1
@@ -109,8 +109,8 @@ SLIDER
 greenbelt-position
 greenbelt-position
 0
-80
-49.0
+count patches
+33.0
 1
 1
 NIL
@@ -125,7 +125,7 @@ greenbelt-width
 greenbelt-width
 1
 21
-1.0
+11.0
 2
 1
 NIL
@@ -138,13 +138,51 @@ SLIDER
 231
 available-locations
 available-locations
-0
-80
-11.0
+1
+count patches - 1 - greenbelt-width
+6.0
 1
 1
 NIL
 HORIZONTAL
+
+PLOT
+339
+69
+704
+351
+asthetic quality
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+true
+"" ""
+PENS
+"sum of occupied p." 1.0 0 -13345367 true "" "let occupied patches with [ pcolor = white ]\nplot sum [asthetic-quality] of occupied"
+
+PLOT
+777
+68
+1133
+354
+occupied patches
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+true
+"" ""
+PENS
+"inside" 1.0 0 -14070903 true "" "plot count patches with [ pcolor = white and inside = true]"
+"total" 1.0 0 -7500403 true "" "plot count patches with [ pcolor = white]"
+"outside" 1.0 0 -2674135 true "" "plot count patches with [ pcolor = white and inside = false]"
 
 @#$#@#$#@
 ## WHAT IS IT?
