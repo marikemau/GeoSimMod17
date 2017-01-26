@@ -37,7 +37,7 @@ to setup-asthetic-quality
     set asthetic-quality random-float 1
   ]
   if aesthetic-quality-distribution = "left-high" [
-    set asthetic-quality 1
+    set asthetic-quality ((pxcor + 1) / (world-width + 1))
   ]
 end
 
@@ -215,8 +215,8 @@ CHOOSER
 401
 aesthetic-quality-distribution
 aesthetic-quality-distribution
-"uniform" "random" "left-high" "right-heigh" "tent" "valley"
-0
+"uniform" "random" "left-high" "right-high" "tent" "valley"
+3
 
 @#$#@#$#@
 ## WHAT IS IT?
