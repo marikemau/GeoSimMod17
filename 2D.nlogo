@@ -30,7 +30,15 @@ to setup-greenbelt
 end
 
 to setup-asthetic-quality
-  set asthetic-quality random-float 1
+  if aesthetic-quality-distribution = "uniform" [
+    set asthetic-quality 0
+  ]
+  if aesthetic-quality-distribution = "random" [
+    set asthetic-quality random-float 1
+  ]
+  if aesthetic-quality-distribution = "left-high" [
+    set asthetic-quality 1
+  ]
 end
 
 to setup-distance
@@ -41,15 +49,22 @@ to go
   if (count patches - count residents - count centers - (greenbelt-width * world-height) - available-locations) = 0 [
     stop
   ]
-
+  ;; searching for 15 locations in paper
   let randomPatches n-of available-locations patches with [greenbelt = false and count turtles-here = 0]
 
   ;; TODO: add 10 patches for each tick
-  ask max-one-of randomPatches [asthetic-quality] [sprout-residents 1]
+  let lastSprout min-one-of randomPatches [aq * asthetic-quality * distance-to-center + asd * distance-to-center * distance-to-center]
+
+  ask lastSprout [sprout-residents 1]
+
 
   ;; add new center each 10 timesteps
   if ticks mod 10 = 0 [
-    ask one-of patches with [inside = true and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]
+    ask lastSprout [
+      ;;show neighbors
+      ask one-of neighbors with [inside = true and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]
+    ]
+    ;;
     ;; recalculate distance
     ask patches [setup-distance]
   ]
@@ -58,10 +73,10 @@ to go
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-200
-10
-856
-667
+227
+11
+883
+668
 -1
 -1
 8.0
@@ -157,11 +172,51 @@ available-locations
 available-locations
 0
 80
-9.0
+15.0
 1
 1
 NIL
 HORIZONTAL
+
+SLIDER
+23
+251
+195
+284
+aq
+aq
+0
+1
+0.5
+0.5
+1
+NIL
+HORIZONTAL
+
+SLIDER
+17
+308
+189
+341
+asd
+asd
+0
+1
+0.5
+0.5
+1
+NIL
+HORIZONTAL
+
+CHOOSER
+4
+356
+212
+401
+aesthetic-quality-distribution
+aesthetic-quality-distribution
+"uniform" "random" "left-high" "right-heigh" "tent" "valley"
+0
 
 @#$#@#$#@
 ## WHAT IS IT?
