@@ -73,7 +73,7 @@ to go
  ask max-one-of residents [who] [
       ;;show neighbors
 
-      if pxcor < greenbelt-position and pxcor = (greenbelt-position - 2) [ set asthetic-quality 0.6]o one-of neighbors with [inside = true and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]
+      ask one-of neighbors with [inside = true and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]
     ]
     ;;
     ;; recalculate distance
@@ -153,7 +153,7 @@ greenbelt-position
 greenbelt-position
 0
 world-width
-40.0
+66.0
 1
 1
 NIL
