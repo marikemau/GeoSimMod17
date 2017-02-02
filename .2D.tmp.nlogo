@@ -42,12 +42,13 @@ to setup-asthetic-quality
   if aesthetic-quality-distribution = "left-high" [
     set asthetic-quality ((pxcor + 1) / (world-width + 1))
   ]
-  if GB_influence?
+  ifelse GB_influence?
     [
       if pxcor < greenbelt-position and pxcor = (greenbelt-position - 1) [ set asthetic-quality 1]
       if pxcor < greenbelt-position and pxcor = (greenbelt-position - 2) [ set asthetic-quality 0.6]
       if pxcor < greenbelt-position and pxcor = (greenbelt-position - 3) [ set asthetic-quality 0.3]
     ]
+    []
 end
 
 to setup-distance
@@ -73,6 +74,7 @@ to go
 end
 
 to set-new-center
+
   ;; add new center each 10 timesteps
   if ticks mod 100 = 0 [
     ;; TODO: check if for inside true are still free patches available
@@ -247,7 +249,7 @@ SWITCH
 457
 GB_influence?
 GB_influence?
-1
+0
 1
 -1000
 
