@@ -54,25 +54,35 @@ to go
   let randomPatches n-of available-locations patches with [greenbelt = false and count turtles-here = 0]
 
   ;; TODO: add 10 patches for each tick
+  ;; add new resident at best of the available locations
   let lastSprout min-one-of randomPatches [aq * asthetic-quality * distance-to-center + asd * distance-to-center * distance-to-center]
-
-
   ask lastSprout [sprout-residents 1]
 
+  set-new-center
+
+  tick
+end
+
+to set-new-center
   ;; add new center each 10 timesteps
-  if ticks mod 10 = 0 [
-
- ask max-one-of residents [who] [
-      ;;show neighbors
-
-      ask one-of neighbors with [inside = true and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]
+  if ticks mod 100 = 0 [
+    ;; TODO: check if for inside true are still free patches available
+    ;; take the last placed resident
+    ask max-one-of residents [who] [
+      ;; if this resident has free space in neighbourhood, place center else, otherwise place center randomly inside
+      ifelse sum [count turtles-here] of neighbors with [inside = true] < 8
+      [ask one-of neighbors with [inside = true and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]]
+      [ ifelse sum [count turtles-here] of neighbors with [inside = true] < 5
+        [ifelse sum [count turtles-here] of neighbors with [inside = true] < 3
+          [ask one-of neighbors with [inside = true and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]]
+          [ask one-of patches with [inside = true and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]]
+        ]
+        [ask one-of patches with [inside = true and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]]
+      ask one-of patches with [inside = true and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]]
     ]
-    ;;
     ;; recalculate distance
     ask patches [setup-distance]
   ]
-
-  tick
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
