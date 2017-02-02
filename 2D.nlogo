@@ -25,9 +25,10 @@ end
 
 ;; set greenbelt patches
 to setup-greenbelt
-  if pxcor >= (greenbelt-position - (greenbelt-width / 2)) and pxcor <= (greenbelt-position + (greenbelt-width / 2)) [ set pcolor green set greenbelt true]
-  if pxcor >= (greenbelt-position - (greenbelt-width / 2)) [ set inside false]
+  if (pxcor >= greenbelt-position and pxcor <= (greenbelt-position + (greenbelt-width))) [ set pcolor green set greenbelt true]
+  if pxcor >= (greenbelt-position) [ set inside false]
 end
+
 
 to setup-asthetic-quality
   if aesthetic-quality-distribution = "uniform" [
