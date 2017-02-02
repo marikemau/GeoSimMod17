@@ -1,5 +1,5 @@
 patches-own [
-  asthetic-quality
+  utilityDistance
   greenbelt
   inside
 ]
@@ -9,10 +9,10 @@ breed [residents resident]
 
 to setup
   clear-all
-  resize-world 0 80 0 0 ;; 1D model -> height = 1
+  resize-world 0 (80 + greenbelt-width) 0 0 ;; 1D model -> height = 1
   ask patches [set greenbelt false set inside true]
   ask patches [setup-greenbelt]
-  ask patches [setup-asthetic-quality]
+  ask patches [setup-utilityDistance]
 
   create-centers 1 [setxy 0 0 set color white set shape "house"]
 
@@ -21,13 +21,13 @@ end
 
 ;; set greenbelt patches
 to setup-greenbelt
-  if pxcor >= (greenbelt-position - (greenbelt-width / 2)) and pxcor <= (greenbelt-position + (greenbelt-width / 2)) [ set pcolor green set greenbelt true]
-  if pxcor >= (greenbelt-position - (greenbelt-width / 2)) [ set inside false]
+  if (pxcor >= greenbelt-position and pxcor <= (greenbelt-position + (greenbelt-width))) [ set pcolor green set greenbelt true]
+  if pxcor >= (greenbelt-position) [ set inside false]
 end
 
 ;; TODO: change to distance center
-to setup-asthetic-quality
-  set asthetic-quality distancexy 0 0 * 0.5
+to setup-utilityDistance
+  set utilityDistance distancexy 0 0 * 0.5
 end
 
 to go
@@ -36,14 +36,14 @@ to go
   ]
   ;; selects random patches and places a turtle on the one with the highest astthetic-quality
   let randomPatches n-of available-locations patches with [greenbelt = false and count turtles-here = 0]
-  ask min-one-of randomPatches [asthetic-quality] [sprout-residents 1 [set shape "person"] set pcolor white]
+  ask min-one-of randomPatches [utilityDistance] [sprout-residents 1 [set shape "person"] set pcolor white]
   tick
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
 95
 10
-1156
+1416
 32
 -1
 -1
@@ -58,7 +58,7 @@ GRAPHICS-WINDOW
 0
 1
 0
-80
+100
 0
 0
 0
@@ -110,7 +110,7 @@ greenbelt-position
 greenbelt-position
 0
 count patches
-33.0
+51.0
 1
 1
 NIL
@@ -124,9 +124,9 @@ SLIDER
 greenbelt-width
 greenbelt-width
 1
-21
-11.0
-2
+20
+20.0
+1
 1
 NIL
 HORIZONTAL
@@ -139,8 +139,8 @@ SLIDER
 available-locations
 available-locations
 1
-count patches - 1 - greenbelt-width
-6.0
+(count patches - 1 - greenbelt-width) / 4
+4.0
 1
 1
 NIL
@@ -151,7 +151,7 @@ PLOT
 69
 704
 351
-asthetic quality
+Utility of selected patches
 NIL
 NIL
 0.0
@@ -159,10 +159,10 @@ NIL
 0.0
 10.0
 true
-true
+false
 "" ""
 PENS
-"sum of occupied p." 1.0 0 -13345367 true "" "let occupied patches with [ pcolor = white ]\nplot sum [asthetic-quality] of occupied"
+"sum of occupied p." 1.0 0 -13345367 true "" "let occupied patches with [ pcolor = white ]\nplot sum [utilityDistance] of occupied"
 
 PLOT
 777
@@ -170,8 +170,8 @@ PLOT
 1133
 354
 occupied patches
-NIL
-NIL
+ticks
+patches
 0.0
 10.0
 0.0

@@ -55,13 +55,15 @@ to go
   ;; TODO: add 10 patches for each tick
   let lastSprout min-one-of randomPatches [aq * asthetic-quality * distance-to-center + asd * distance-to-center * distance-to-center]
 
-  ask lastSprout [sprout-residents 1]
 
+  ask lastSprout [sprout-residents 1]
 
   ;; add new center each 10 timesteps
   if ticks mod 10 = 0 [
-    ask lastSprout [
+
+ ask max-one-of residents [who] [
       ;;show neighbors
+
       ask one-of neighbors with [inside = true and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]
     ]
     ;;
