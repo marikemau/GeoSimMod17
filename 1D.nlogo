@@ -1,40 +1,49 @@
+;;declaring patch variables
 patches-own [
   utilityDistance
   greenbelt
   inside
 ]
 
+;;declaring agents
 breed [centers center]
 breed [residents resident]
 
+;;model setup
 to setup
   clear-all
+
+  ;;model area:
   resize-world 0 (80 + greenbelt-width) 0 0 ;; 1D model -> height = 1
+
+  ;;call the patch functions:
   ask patches [set greenbelt false set inside true]
   ask patches [setup-greenbelt]
   ask patches [setup-utilityDistance]
 
+  ;;create the first service center:
   create-centers 1 [setxy 0 0 set color white set shape "house"]
 
   reset-ticks
 end
 
-;; set greenbelt patches
+;;set greenbelt patches defined by user input
 to setup-greenbelt
   if (pxcor >= greenbelt-position and pxcor <= (greenbelt-position + (greenbelt-width))) [ set pcolor green set greenbelt true]
   if pxcor >= (greenbelt-position) [ set inside false]
 end
 
-;; TODO: change to distance center
+;;calculate the distance from service centers
 to setup-utilityDistance
   set utilityDistance distancexy 0 0 * 0.5
 end
 
+;;runs each tick
 to go
   if (count patches - 1 - count residents - greenbelt-width - available-locations) = 0 [
     stop
   ]
-  ;; selects random patches and places a turtle on the one with the highest astthetic-quality
+  ;; selects random patches and places a turtle on the one with the highest aesthetic-quality
   let randomPatches n-of available-locations patches with [greenbelt = false and count turtles-here = 0]
   ask min-one-of randomPatches [utilityDistance] [sprout-residents 1 [set shape "person"] set pcolor white]
   tick
