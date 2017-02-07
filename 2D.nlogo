@@ -83,6 +83,8 @@ to set-new-center
     ;; take the last placed resident
     ask max-one-of residents [who] [
       ;; if this resident has free space in neighbourhood, place center else, otherwise place center randomly inside
+      show self
+      show sum [count turtles-here] of neighbors with [inside = true]
       ifelse sum [count turtles-here] of neighbors with [inside = true] < 8
       [ask one-of neighbors with [inside = true and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]]
       [ ifelse sum [count turtles-here] of neighbors with [inside = true] < 5
