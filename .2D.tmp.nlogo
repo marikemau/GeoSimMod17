@@ -1,10 +1,10 @@
 ;;declaring patch variables
 patches-own [
-  utilityDistance
+  distance-to-center
+  asthetic-quality
   greenbelt
   inside
 ]
-
 ;;declaring agents
 breed [centers center]
 breed [residents resident]
@@ -14,15 +14,16 @@ to setup
   clear-all
 
   ;;model area:
-  resize-world 0 (80 + greenbelt-width) 0 0 ;; 1D model -> height = 1
+  resize-world 0 80 0 80 ;; 1D model -> height = 1
 
   ;;call the patch functions:
   ask patches [set greenbelt false set inside true]
   ask patches [setup-greenbelt]
-  ask patches [setup-utilityDistance]
+  ask patches [setup-aesthetic-quality]
+  ask patches [setup-distance]
 
   ;;create the first service center:
-  create-centers 1 [setxy 0 0 set color white set shape "house"]
+  create-centers 1 [setxy 0 (world-height / 2) set color white set shape "house"]
 
   reset-ticks
 end
@@ -33,30 +34,83 @@ to setup-greenbelt
   if pxcor >= (greenbelt-position) [ set inside false]
 end
 
+;;set the aesthetic-quality of the patches defined by user input
+to setup-aesthetic-quality
+  if aesthetic-quality-distribution = "uniform" [
+    set asthetic-quality 0
+  ]
+  if aesthetic-quality-distribution = "random" [
+    set asthetic-quality random-float 1
+  ]
+  if aesthetic-quality-distribution = "left-high" [
+    set asthetic-quality ((pxcor + 1) / (world-width + 1))
+  ]
+  if GB_influence?
+    [
+      if pxcor < greenbelt-position and pxcor = (greenbelt-position - 1) [ set asthetic-quality 1]
+      if pxcor < greenbelt-position and pxcor = (greenbelt-position - 2) [ set asthetic-quality 0.6]
+      if pxcor < greenbelt-position and pxcor = (greenbelt-position - 3) [ set asthetic-quality 0.3]
+
+      if pxcor > (greenbelt-position + (greenbelt-width)) and pxcor = (greenbelt-position + (greenbelt-width + 1)) [ set asthetic-quality 1]
+      if pxcor > (greenbelt-position + (greenbelt-width)) and pxcor = (greenbelt-position + (greenbelt-width + 2)) [ set asthetic-quality 0.6]
+      if pxcor > (greenbelt-position + (greenbelt-width)) and pxcor = (greenbelt-position + (greenbelt-width + 3)) [ set asthetic-quality 0.3]
+    ]
+end
+
 ;;calculate the distance from service centers
-to setup-utilityDistance
-  set utilityDistance distancexy 0 0 * 0.5
+to setup-distance
+  set distance-to-center distance min-one-of centers [distance myself]
 end
 
 ;;runs each tick
 to go
-  if (count patches - 1 - count residents - greenbelt-width - available-locations) = 0 [
+  if (count patches - count residents - count centers - (greenbelt-width * world-height) - available-locations) = 0 [
     stop
   ]
-  ;; selects random patches and places a turtle on the one with the highest aesthetic-quality
+  ;; searching for 15 locations in paper
   let randomPatches n-of available-locations patches with [greenbelt = false and count turtles-here = 0]
-  ask min-one-of randomPatches [utilityDistance] [sprout-residents 1 [set shape "person"] set pcolor white]
+
+  ;; TODO: add 10 patches for each tick
+  ;; add new resident at best of the available locations
+  let lastSprout min-one-of randomPatches [aq * asthetic-quality * distance-to-center + asd * distance-to-center * distance-to-center]
+  ask lastSprout [sprout-residents 1]
+
+  set-new-center
+
   tick
+end
+
+;;creating n
+to set-new-center
+  ;; add new center each 10 timesteps
+  if ticks mod 100 = 0 [
+    ;; TODO: check if for inside true are still free patches available
+    ;; take the last placed resident
+    ask max-one-of residents [who] [
+      ;; if this resident has free space in neighbourhood, place center else, otherwise place center randomly inside
+      ifelse sum [count turtles-here] of neighbors with [inside = true] < 8
+      [ask one-of neighbors with [inside = true and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]]
+      [ ifelse sum [count turtles-here] of neighbors with [inside = true] < 5
+        [ifelse sum [count turtles-here] of neighbors with [inside = true] < 3
+          [ask one-of neighbors with [inside = true and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]]
+          [ask one-of patches with [inside = true and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]]
+        ]
+        [ask one-of patches with [inside = true and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]]
+      ask one-of patches with [inside = true and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]]
+    ]
+    ;; recalculate distance
+    ask patches [setup-distance]
+  ]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-95
-10
-1416
-32
+227
+11
+883
+668
 -1
 -1
-13.0
+8.0
 1
 10
 1
@@ -67,9 +121,9 @@ GRAPHICS-WINDOW
 0
 1
 0
-100
+80
 0
-0
+80
 0
 0
 1
@@ -118,8 +172,8 @@ SLIDER
 greenbelt-position
 greenbelt-position
 0
-count patches
-51.0
+world-width
+40.0
 1
 1
 NIL
@@ -133,9 +187,9 @@ SLIDER
 greenbelt-width
 greenbelt-width
 1
-20
-20.0
-1
+21
+7.0
+2
 1
 NIL
 HORIZONTAL
@@ -147,51 +201,64 @@ SLIDER
 231
 available-locations
 available-locations
-1
-(count patches - 1 - greenbelt-width) / 4
-4.0
+0
+80
+15.0
 1
 1
 NIL
 HORIZONTAL
 
-PLOT
-339
-69
-704
-351
-Utility of selected patches
+SLIDER
+23
+251
+195
+284
+aq
+aq
+0
+1
+0.5
+0.5
+1
 NIL
-NIL
-0.0
-10.0
-0.0
-10.0
-true
-false
-"" ""
-PENS
-"sum of occupied p." 1.0 0 -13345367 true "" "let occupied patches with [ pcolor = white ]\nplot sum [utilityDistance] of occupied"
+HORIZONTAL
 
-PLOT
-777
-68
-1133
-354
-occupied patches
-ticks
-patches
-0.0
-10.0
-0.0
-10.0
-true
-true
-"" ""
-PENS
-"inside" 1.0 0 -14070903 true "" "plot count patches with [ pcolor = white and inside = true]"
-"total" 1.0 0 -7500403 true "" "plot count patches with [ pcolor = white]"
-"outside" 1.0 0 -2674135 true "" "plot count patches with [ pcolor = white and inside = false]"
+SLIDER
+17
+308
+189
+341
+asd
+asd
+0
+1
+0.5
+0.5
+1
+NIL
+HORIZONTAL
+
+CHOOSER
+4
+356
+212
+401
+aesthetic-quality-distribution
+aesthetic-quality-distribution
+"uniform" "random" "left-high" "right-high" "tent" "valley"
+0
+
+SWITCH
+52
+424
+208
+457
+GB_influence?
+GB_influence?
+0
+1
+-1000
 
 @#$#@#$#@
 ## WHAT IS IT?

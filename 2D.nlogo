@@ -1,38 +1,41 @@
+;;declaring patch variables
 patches-own [
   distance-to-center
   asthetic-quality
   greenbelt
   inside
 ]
-
+;;declaring agents
 breed [centers center]
 breed [residents resident]
 
+;;model setup
 to setup
   clear-all
+
+  ;;model area:
   resize-world 0 80 0 80 ;; 1D model -> height = 1
+
+  ;;call the patch functions:
   ask patches [set greenbelt false set inside true]
   ask patches [setup-greenbelt]
-  ask patches [setup-asthetic-quality]
-
-  ;;ask one-of patches with [inside = true] [sprout-centers 1 [set color white set shape "house"]]
-  create-centers 1 [setxy 0 (world-height / 2) set color white set shape "house"]
-
+  ask patches [setup-aesthetic-quality]
   ask patches [setup-distance]
+
+  ;;create the first service center:
+  create-centers 1 [setxy 0 (world-height / 2) set color white set shape "house"]
 
   reset-ticks
 end
 
-;; set greenbelt patches
+;;set greenbelt patches defined by user input
 to setup-greenbelt
   if (pxcor >= greenbelt-position and pxcor <= (greenbelt-position + (greenbelt-width))) [ set pcolor green set greenbelt true]
   if pxcor >= (greenbelt-position) [ set inside false]
 end
 
-
-
-
-to setup-asthetic-quality
+;;set the aesthetic-quality of the patches defined by user input
+to setup-aesthetic-quality
   if aesthetic-quality-distribution = "uniform" [
     set asthetic-quality 0
   ]
@@ -54,12 +57,13 @@ to setup-asthetic-quality
     ]
 end
 
+;;calculate the distance from service centers
 to setup-distance
   set distance-to-center distance min-one-of centers [distance myself]
 end
 
+;;runs each tick
 to go
-
   if (count patches - count residents - count centers - (greenbelt-width * world-height) - available-locations) = 0 [
     stop
   ]
@@ -76,10 +80,10 @@ to go
   tick
 end
 
+;;creating new service centers
 to set-new-center
   ;; add new center each 10 timesteps
   if ticks mod 100 = 0 [
-    ;; TODO: check if for inside true are still free patches available
     ;; take the last placed resident
     ask max-one-of residents [who] [
       ;; if this resident has free space in neighbourhood, place center else, otherwise place center randomly inside
