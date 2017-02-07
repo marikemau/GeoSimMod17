@@ -80,10 +80,11 @@ to go
   tick
 end
 
-;;creating new service centers
+;;creating n
 to set-new-center
   ;; add new center each 10 timesteps
   if ticks mod 100 = 0 [
+    ;; TODO: check if for inside true are still free patches available
     ;; take the last placed resident
     ask max-one-of residents [who] [
       ;; if this resident has free space in neighbourhood, place center else, otherwise place center randomly inside
