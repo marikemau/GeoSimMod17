@@ -20,10 +20,11 @@ to setup
   ask patches [set greenbelt false set inside true]
   ask patches [setup-greenbelt]
   ask patches [setup-aesthetic-quality]
-  ask patches [setup-distance]
 
   ;;create the first service center:
   create-centers 1 [setxy 0 (world-height / 2) set color white set shape "house"]
+
+  ask patches [setup-distance]
 
   reset-ticks
 end
@@ -87,17 +88,30 @@ to set-new-center
     ;; take the last placed resident
     ask max-one-of residents [who] [
       ;; if this resident has free space in neighbourhood, place center else, otherwise place center randomly inside
-      show self
-      show sum [count turtles-here] of neighbors with [inside = true]
-      ifelse sum [count turtles-here] of neighbors with [inside = true] < 8
-      [ask one-of neighbors with [inside = true and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]]
-      [ ifelse sum [count turtles-here] of neighbors with [inside = true] < 5
-        [ifelse sum [count turtles-here] of neighbors with [inside = true] < 3
-          [ask one-of neighbors with [inside = true and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]]
-          [ask one-of patches with [inside = true and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]]
+
+      ifelse sum [count turtles-here] of neighbors with [greenbelt = false] < 8
+      [
+        ifelse sum [count turtles-here] of neighbors with [greenbelt = false] < 5
+        [
+          ifelse sum [count turtles-here] of neighbors with [greenbelt = false] < 3
+          [
+            ask one-of neighbors with [greenbelt = false and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]
+          ]
+          [
+            ;; else < 3
+          ]
         ]
-        [ask one-of patches with [inside = true and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]]
-      ask one-of patches with [inside = true and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]]
+        [
+          ;; else < 5
+        ]
+      ]
+      [
+        ;; else < 8
+        ask one-of patches with [greenbelt = false and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]
+      ]
+
+
+      ask one-of neighbors with [greenbelt = false and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]
     ]
     ;; recalculate distance
     ask patches [setup-distance]
