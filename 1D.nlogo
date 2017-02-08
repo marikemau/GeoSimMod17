@@ -29,7 +29,7 @@ end
 
 ;;set greenbelt patches defined by user input
 to setup-greenbelt
-  if (pxcor >= greenbelt-position and pxcor <= (greenbelt-position + (greenbelt-width))) [ set pcolor green set greenbelt true]
+  if (pxcor >= greenbelt-position and pxcor <= (greenbelt-position + (greenbelt-width - 1))) [ set pcolor green set greenbelt true]
   if pxcor >= (greenbelt-position) [ set inside false]
 end
 
@@ -40,19 +40,19 @@ end
 
 ;;runs each tick
 to go
-  if (count patches - 1 - count residents - greenbelt-width - available-locations) = 0 [
+  if (count patches - count residents - greenbelt-width - available-locations) = 0 [
     stop
   ]
   ;; selects random patches and places a turtle on the one with the highest aesthetic-quality
   let randomPatches n-of available-locations patches with [greenbelt = false and count turtles-here = 0]
-  ask min-one-of randomPatches [utilityDistance] [sprout-residents 1 [set shape "person"] set pcolor white]
+  ask min-one-of randomPatches [utilityDistance] [sprout-residents 1 [set shape "person"] set pcolor 1]
   tick
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
 95
 10
-1416
+1169
 32
 -1
 -1
@@ -67,7 +67,7 @@ GRAPHICS-WINDOW
 0
 1
 0
-100
+81
 0
 0
 0
@@ -134,7 +134,7 @@ greenbelt-width
 greenbelt-width
 1
 20
-20.0
+1.0
 1
 1
 NIL
@@ -189,9 +189,9 @@ true
 true
 "" ""
 PENS
-"inside" 1.0 0 -14070903 true "" "plot count patches with [ pcolor = white and inside = true]"
-"total" 1.0 0 -7500403 true "" "plot count patches with [ pcolor = white]"
-"outside" 1.0 0 -2674135 true "" "plot count patches with [ pcolor = white and inside = false]"
+"inside" 1.0 0 -14070903 true "" "plot count patches with [ pcolor = 1 and inside = true]"
+"total" 1.0 0 -7500403 true "" "plot count patches with [ pcolor = 1]"
+"outside" 1.0 0 -2674135 true "" "plot count patches with [ pcolor = 1 and inside = false]"
 
 @#$#@#$#@
 ## WHAT IS IT?

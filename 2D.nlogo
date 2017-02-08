@@ -14,7 +14,7 @@ to setup
   clear-all
 
   ;;model area:
-  resize-world 0 80 0 80 ;; 1D model -> height = 1
+  resize-world 0 (80 + greenbelt-width) 0 80 ;; 1D model -> height = 1
 
   ;;call the patch functions:
   ask patches [set greenbelt false set inside true]
@@ -31,7 +31,7 @@ end
 
 ;;set greenbelt patches defined by user input
 to setup-greenbelt
-  if (pxcor >= greenbelt-position and pxcor <= (greenbelt-position + (greenbelt-width))) [ set pcolor green set greenbelt true]
+  if (pxcor >= greenbelt-position and pxcor <= (greenbelt-position + (greenbelt-width - 1))) [ set pcolor green set greenbelt true]
   if pxcor >= (greenbelt-position) [ set inside false]
 end
 
@@ -52,9 +52,9 @@ to setup-aesthetic-quality
       if pxcor < greenbelt-position and pxcor = (greenbelt-position - 2) [ set asthetic-quality 0.6]
       if pxcor < greenbelt-position and pxcor = (greenbelt-position - 3) [ set asthetic-quality 0.3]
 
-      if pxcor > (greenbelt-position + (greenbelt-width)) and pxcor = (greenbelt-position + (greenbelt-width + 1)) [ set asthetic-quality 1]
-      if pxcor > (greenbelt-position + (greenbelt-width)) and pxcor = (greenbelt-position + (greenbelt-width + 2)) [ set asthetic-quality 0.6]
-      if pxcor > (greenbelt-position + (greenbelt-width)) and pxcor = (greenbelt-position + (greenbelt-width + 3)) [ set asthetic-quality 0.3]
+      if pxcor > (greenbelt-position + (greenbelt-width)) and pxcor = (greenbelt-position + (greenbelt-width)) [ set asthetic-quality 1]
+      if pxcor > (greenbelt-position + (greenbelt-width)) and pxcor = (greenbelt-position + (greenbelt-width + 1)) [ set asthetic-quality 0.6]
+      if pxcor > (greenbelt-position + (greenbelt-width)) and pxcor = (greenbelt-position + (greenbelt-width + 2)) [ set asthetic-quality 0.3]
     ]
 end
 
@@ -65,7 +65,7 @@ end
 
 ;;runs each tick
 to go
-  if (count patches - count residents - count centers - (greenbelt-width * world-height) - available-locations) = 0 [
+  if (count patches - count turtles - ((greenbelt-width) * world-height) - available-locations) = 0 [
     stop
   ]
   ;; searching for 15 locations in paper
@@ -74,11 +74,28 @@ to go
   ;; TODO: add 10 patches for each tick
   ;; add new resident at best of the available locations
   let lastSprout min-one-of randomPatches [aq * asthetic-quality * distance-to-center + asd * distance-to-center * distance-to-center]
-  ask lastSprout [sprout-residents 1]
+  ask lastSprout [sprout-residents 1 [set shape "person"] set pcolor 1]
 
   if ticks mod 100 = 0  and ticks != 0
   [
     set-new-center
+  ]
+
+  if count residents with [inside = false] = 300
+  [
+    file-open "ticks_2D_results.csv"
+    file-write ticks
+    file-write greenbelt-width
+    file-write aq
+    file-write asd
+    file-write greenbelt-position
+    file-write available-locations
+    file-write aesthetic-quality-distribution
+    file-write GB_influence?
+    file-write count centers with [inside = false]
+    file-print " "
+    file-close
+    stop
   ]
 
   tick
@@ -90,10 +107,8 @@ to set-new-center
     let x true
     let i 0
     let y count turtles - 1
-    show y
     while [x]
       [ask turtle y [
-        show y
         ;; if this resident has free space in neighbourhood, place center else, otherwise place center randomly inside
         ifelse sum [count turtles-here] of neighbors < count neighbors with [greenbelt = false]
           [
@@ -114,7 +129,7 @@ end
 GRAPHICS-WINDOW
 227
 11
-883
+1003
 668
 -1
 -1
@@ -129,7 +144,7 @@ GRAPHICS-WINDOW
 0
 1
 0
-80
+95
 0
 80
 0
@@ -181,7 +196,7 @@ greenbelt-position
 greenbelt-position
 0
 world-width
-60.0
+5.0
 1
 1
 NIL
@@ -195,9 +210,9 @@ SLIDER
 greenbelt-width
 greenbelt-width
 1
-21
-7.0
-2
+30
+15.0
+1
 1
 NIL
 HORIZONTAL
@@ -209,9 +224,9 @@ SLIDER
 231
 available-locations
 available-locations
-0
+1
 80
-38.0
+80.0
 1
 1
 NIL
@@ -226,7 +241,7 @@ aq
 aq
 0
 1
-1.0
+0.5
 0.5
 1
 NIL
@@ -241,7 +256,7 @@ asd
 asd
 0
 1
-1.0
+0.5
 0.5
 1
 NIL
@@ -267,6 +282,44 @@ GB_influence?
 0
 1
 -1000
+
+PLOT
+1006
+15
+1348
+256
+Utiliy of occupied patches
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"sum of occupied p." 1.0 0 -14070903 true "" "let occupied patches with [ pcolor = white ]\nplot sum [aq * asthetic-quality * distance-to-center + asd * distance-to-center * distance-to-center] of occupied"
+
+PLOT
+1004
+263
+1350
+524
+occupied patches
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+true
+"" ""
+PENS
+"inside" 1.0 0 -14070903 true "" "plot count patches with [ pcolor = 1 and inside = true]"
+"total" 1.0 0 -7500403 true "" "plot count patches with [ pcolor = 1]"
+"outside" 1.0 0 -2674135 true "" "plot count patches with [ pcolor = 1 and inside = false]"
 
 @#$#@#$#@
 ## WHAT IS IT?
