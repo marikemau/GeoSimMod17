@@ -200,7 +200,7 @@ greenbelt-position
 greenbelt-position
 0
 world-width
-5.0
+46.0
 1
 1
 NIL
@@ -230,7 +230,7 @@ available-locations
 available-locations
 1
 80
-80.0
+41.0
 1
 1
 NIL
@@ -283,7 +283,7 @@ SWITCH
 457
 GB_influence?
 GB_influence?
-0
+1
 1
 -1000
 
@@ -303,7 +303,7 @@ true
 false
 "" ""
 PENS
-"sum of occupied p." 1.0 0 -14070903 true "" "let occupied patches with [ pcolor = white ]\nplot sum [aq * asthetic-quality * distance-to-center + asd * distance-to-center * distance-to-center] of occupied"
+"sum of occupied p." 1.0 0 -14070903 true "" "let occupied patches with [ pcolor = 1 ]\nplot sum [aq * asthetic-quality * distance-to-center + asd * distance-to-center * distance-to-center] of occupied"
 
 PLOT
 1004
@@ -671,6 +671,34 @@ NetLogo 6.0
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
+<experiments>
+  <experiment name="experiment" repetitions="100" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>count turtles</metric>
+    <enumeratedValueSet variable="aesthetic-quality-distribution">
+      <value value="&quot;random&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="aq">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="GB_influence?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="46"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="asd">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="41"/>
+    </enumeratedValueSet>
+  </experiment>
+</experiments>
 @#$#@#$#@
 @#$#@#$#@
 default
