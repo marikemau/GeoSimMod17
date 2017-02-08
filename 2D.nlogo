@@ -38,23 +38,27 @@ end
 ;;set the aesthetic-quality of the patches defined by user input
 to setup-aesthetic-quality
   if aesthetic-quality-distribution = "uniform" [
-    set asthetic-quality 0
+    set asthetic-quality 1
   ]
   if aesthetic-quality-distribution = "random" [
     set asthetic-quality random-float 1
+  ]
+  if aesthetic-quality-distribution = "right-high" [
+    set asthetic-quality (((world-width + 1) / (pxcor + 1)) / (world-width + 1))
   ]
   if aesthetic-quality-distribution = "left-high" [
     set asthetic-quality ((pxcor + 1) / (world-width + 1))
   ]
   if GB_influence?
     [
-      if pxcor < greenbelt-position and pxcor = (greenbelt-position - 1) [ set asthetic-quality 1]
-      if pxcor < greenbelt-position and pxcor = (greenbelt-position - 2) [ set asthetic-quality 0.6]
-      if pxcor < greenbelt-position and pxcor = (greenbelt-position - 3) [ set asthetic-quality 0.3]
+      if pxcor < greenbelt-position and pxcor = (greenbelt-position - 1) [ set asthetic-quality -1]
+      if pxcor < greenbelt-position and pxcor = (greenbelt-position - 2) [ set asthetic-quality -0.6]
+      if pxcor < greenbelt-position and pxcor = (greenbelt-position - 3) [ set asthetic-quality -0.3]
 
-      if pxcor > (greenbelt-position + (greenbelt-width)) and pxcor = (greenbelt-position + (greenbelt-width)) [ set asthetic-quality 1]
-      if pxcor > (greenbelt-position + (greenbelt-width)) and pxcor = (greenbelt-position + (greenbelt-width + 1)) [ set asthetic-quality 0.6]
-      if pxcor > (greenbelt-position + (greenbelt-width)) and pxcor = (greenbelt-position + (greenbelt-width + 2)) [ set asthetic-quality 0.3]
+
+      if pxcor > (greenbelt-position + (greenbelt-width)) and pxcor = (greenbelt-position + (greenbelt-width + 1)) [ set asthetic-quality -1]
+      if pxcor > (greenbelt-position + (greenbelt-width)) and pxcor = (greenbelt-position + (greenbelt-width + 2)) [ set asthetic-quality -0.6]
+      if pxcor > (greenbelt-position + (greenbelt-width)) and pxcor = (greenbelt-position + (greenbelt-width + 3)) [ set asthetic-quality -0.3]
     ]
 end
 
@@ -269,8 +273,8 @@ CHOOSER
 401
 aesthetic-quality-distribution
 aesthetic-quality-distribution
-"uniform" "random" "left-high" "right-high" "tent" "valley"
-0
+"uniform" "random" "left-high" "right-high"
+3
 
 SWITCH
 52
