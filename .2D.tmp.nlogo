@@ -74,7 +74,7 @@ to go
   ;; TODO: add 10 patches for each tick
   ;; add new resident at best of the available locations
   let lastSprout min-one-of randomPatches [aq * asthetic-quality * distance-to-center + asd * distance-to-center * distance-to-center]
-  ask lastSprout [sprout-residents 1 [set shape "person"] set pcolor blu]
+  ask lastSprout [sprout-residents 1 [set shape "person"] set pcolor 1]
 
   if ticks mod 100 = 0  and ticks != 0
   [
@@ -196,7 +196,7 @@ greenbelt-position
 greenbelt-position
 0
 world-width
-5.0
+46.0
 1
 1
 NIL
@@ -226,7 +226,7 @@ available-locations
 available-locations
 1
 80
-80.0
+41.0
 1
 1
 NIL
@@ -299,7 +299,7 @@ true
 false
 "" ""
 PENS
-"sum of occupied p." 1.0 0 -14070903 true "" "let occupied patches with [ pcolor = white ]\nplot sum [aq * asthetic-quality * distance-to-center + asd * distance-to-center * distance-to-center] of occupied"
+"sum of occupied p." 1.0 0 -14070903 true "" "let occupied patches with [ pcolor = 1 ]\nplot sum [aq * asthetic-quality * distance-to-center + asd * distance-to-center * distance-to-center] of occupied"
 
 PLOT
 1004
@@ -317,9 +317,9 @@ true
 true
 "" ""
 PENS
-"inside" 1.0 0 -14070903 true "" "plot count patches with [ pcolor = blue and inside = true]"
-"total" 1.0 0 -7500403 true "" "plot count patches with [ pcolor = blue]"
-"outside" 1.0 0 -2674135 true "" "plot count patches with [ pcolor = blue and inside = false]"
+"inside" 1.0 0 -14070903 true "" "plot count patches with [ pcolor = 1 and inside = true]"
+"total" 1.0 0 -7500403 true "" "plot count patches with [ pcolor = 1]"
+"outside" 1.0 0 -2674135 true "" "plot count patches with [ pcolor = 1 and inside = false]"
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -667,6 +667,34 @@ NetLogo 6.0
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
+<experiments>
+  <experiment name="experiment" repetitions="100" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>count turtles</metric>
+    <enumeratedValueSet variable="aesthetic-quality-distribution">
+      <value value="&quot;random&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="aq">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="GB_influence?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="46"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="asd">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="41"/>
+    </enumeratedValueSet>
+  </experiment>
+</experiments>
 @#$#@#$#@
 @#$#@#$#@
 default
