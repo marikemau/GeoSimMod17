@@ -22,7 +22,7 @@ to setup
   ask patches [setup-aesthetic-quality]
 
   ;;create the first service center:
-  create-centers 1 [setxy 0 (world-height / 2) set color white set shape "house"]
+  create-centers 1 [setxy 0 (round (world-height / 2)) set color white set shape "house"]
 
   ask patches [setup-distance]
 
@@ -76,46 +76,39 @@ to go
   let lastSprout min-one-of randomPatches [aq * asthetic-quality * distance-to-center + asd * distance-to-center * distance-to-center]
   ask lastSprout [sprout-residents 1]
 
-  set-new-center
+  if ticks mod 100 = 0  and ticks != 0
+  [
+    set-new-center
+  ]
 
   tick
 end
 
 ;;creating new service centers
 to set-new-center
-  ;; add new center each 10 timesteps
-  if ticks mod 100 = 0 [
     ;; take the last placed resident
-    ask max-one-of residents [who] [
-      ;; if this resident has free space in neighbourhood, place center else, otherwise place center randomly inside
-
-      ifelse sum [count turtles-here] of neighbors with [greenbelt = false] < 8
-      [
-        ifelse sum [count turtles-here] of neighbors with [greenbelt = false] < 5
-        [
-          ifelse sum [count turtles-here] of neighbors with [greenbelt = false] < 3
+    let x true
+    let i 0
+    let y count turtles - 1
+    show y
+    while [x]
+      [ask turtle y [
+        show y
+        ;; if this resident has free space in neighbourhood, place center else, otherwise place center randomly inside
+        ifelse sum [count turtles-here] of neighbors < count neighbors with [greenbelt = false]
           [
             ask one-of neighbors with [greenbelt = false and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]
+            set x false
           ]
           [
-            ;; else < 3
+            set i i + 1
+            set y y - i
           ]
-        ]
-        [
-          ;; else < 5
-        ]
       ]
-      [
-        ;; else < 8
-        ask one-of patches with [greenbelt = false and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]
       ]
 
-
-      ask one-of neighbors with [greenbelt = false and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]
-    ]
     ;; recalculate distance
     ask patches [setup-distance]
-  ]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -188,7 +181,7 @@ greenbelt-position
 greenbelt-position
 0
 world-width
-40.0
+60.0
 1
 1
 NIL
@@ -218,7 +211,7 @@ available-locations
 available-locations
 0
 80
-15.0
+38.0
 1
 1
 NIL
@@ -233,7 +226,7 @@ aq
 aq
 0
 1
-0.5
+1.0
 0.5
 1
 NIL
@@ -248,7 +241,7 @@ asd
 asd
 0
 1
-0.5
+1.0
 0.5
 1
 NIL
