@@ -1,24 +1,48 @@
+;;loading gis extensions
 extensions [gis]
+;;defining greenbelt as global
 globals [greenbelt]
 
+;;delacring patch variables
 patches-own [
+  distance-to-center
   asthetic-quality
   inside
 ]
 
+;;declaring agents
 breed [centers center]
 breed [residents resident]
 
+;;model setup
 to setup
   clear-all
+  ;;model-area
   resize-world 0 80 0 80 ;; 1D model -> height = 1
+  ;call the patch function
   ask patches [setup-asthetic-quality]
+  ;; load shp into model
   load-shp
   setup-greenbelt-area
 
+  ;;create the first service center:
   create-centers 1 [setxy 0 0 set color white set shape "house"]
+  ask patches [setup-distance]
 
   reset-ticks
+end
+
+
+;;function to load different shapefile for chooser
+to load-shp
+  ca
+  ;;load different shapefiles
+  if Choose-Shapefile = "promenade" [set greenbelt gis:load-dataset "data/promenade.shp"]
+  if Choose-Shapefile = "triangle" [set greenbelt gis:load-dataset "data/triangle.shp"]
+  if Choose-Shapefile = "greenbelt" [set greenbelt gis:load-dataset "data/greenbelt.shp"]
+  gis:set-world-envelope gis:envelope-of greenbelt
+  gis:set-drawing-color white
+  gis:draw greenbelt 1
 end
 
 ;; method to create greenbelt patches on basis of the shp
@@ -29,46 +53,85 @@ to setup-greenbelt-area
 end
 
 
-to load-shp
-  ca
-  ;;set greenbelt gis:load-dataset "data/greenbelt.shp"
-  ;;set greenbelt gis:load-dataset "data/prom.shp"
-  if Choose-Shapefile = "promenade" [set greenbelt gis:load-dataset "data/promenade.shp"]
-  if Choose-Shapefile = "triangle" [set greenbelt gis:load-dataset "data/triangle.shp"]
-  if Choose-Shapefile = "greenbelt" [set greenbelt gis:load-dataset "data/greenbelt.shp"]
-  ;;set greenbelt gis:load-dataset "data/triangle.shp"
-  ;;set greenbelt gis:load-dataset "data/promenade.shp"
-  gis:set-world-envelope gis:envelope-of greenbelt
-  gis:set-drawing-color white
-  ;;gis:fill greenbelt 3
-  gis:draw greenbelt 2
-end
-
-
-;; set greenbelt patches
-;to setup-greenbelt
-;  if pxcor >= (greenbelt-position - (greenbelt-width / 2)) and pxcor <= (greenbelt-position + (greenbelt-width / 2)) [ set pcolor green set greenbelt true]
-;  if pxcor >= (greenbelt-position - (greenbelt-width / 2)) [ set inside false]
-;end
 
 ;; TODO: change to distance center
 to setup-asthetic-quality
   set asthetic-quality distancexy 0 0 * 0.5
 end
 
+;;calculate the distance from service centers
+to setup-distance
+  set distance-to-center distance min-one-of centers [distance myself]
+end
+
+;;creating new service centers
+to set-new-center
+  ;; add new center each 10 timesteps
+  if ticks mod 100 = 0 [
+    ;; take the last placed resident
+    ask max-one-of residents [who] [
+      ;; if this resident has free space in neighbourhood, place center else, otherwise place center randomly inside
+
+      ifelse sum [count turtles-here] of neighbors with [inside = false] < 8
+      [
+        ifelse sum [count turtles-here] of neighbors with [inside = false] < 5
+        [
+          ifelse sum [count turtles-here] of neighbors with [inside = false] < 3
+          [
+            ask one-of neighbors with [inside = false and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]
+          ]
+          [
+            ;; else < 3
+          ]
+        ]
+        [
+          ;; else < 5
+        ]
+      ]
+      [
+        ;; else < 8
+        ask one-of patches with [inside = false and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]
+      ]
+
+
+      ask one-of neighbors with [inside = false and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]
+    ]
+    ;; recalculate distance
+    ask patches [setup-distance]
+  ]
+end
+
+;runs each tick
 to go
-  ;; TODO revisit if statement: removed greenbelt width
-  if (900 - count residents - available-locations) = 0 [
+  if (count patches - count residents - count centers - available-locations) = 0 [
     stop
   ]
-
+  ;; searching for 15 locations in paper
   let randomPatches n-of available-locations patches with [inside = false and count turtles-here = 0]
 
   ;; TODO: add 10 patches for each tick
-  ask min-one-of randomPatches [asthetic-quality] [sprout-residents 1]
+  ;; add new resident at best of the available locations
+  let lastSprout min-one-of randomPatches [aq * asthetic-quality * distance-to-center + asd * distance-to-center * distance-to-center]
+  ask lastSprout [sprout-residents 1]
+
+  set-new-center
 
   tick
 end
+
+;to go
+;  ;; TODO revisit if statement: removed greenbelt width
+;  if (900 - count residents - available-locations) = 0 [
+;    stop
+;  ]
+;
+;  let randomPatches n-of available-locations patches with [inside = false and count turtles-here = 0]
+;
+;  ;; TODO: add 10 patches for each tick
+;  ask min-one-of randomPatches [asthetic-quality] [sprout-residents 1]
+;
+;  tick
+;end
 @#$#@#$#@
 GRAPHICS-WINDOW
 200
@@ -140,7 +203,7 @@ available-locations
 available-locations
 0
 80
-80.0
+14.0
 1
 1
 NIL
@@ -155,6 +218,36 @@ Choose-Shapefile
 Choose-Shapefile
 "promenade" "greenbelt" "triangle"
 2
+
+SLIDER
+20
+190
+192
+223
+aq
+aq
+0
+1
+0.5
+.5
+1
+NIL
+HORIZONTAL
+
+SLIDER
+19
+241
+191
+274
+asd
+asd
+0
+1
+0.5
+0.5
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
