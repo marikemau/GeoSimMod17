@@ -138,8 +138,8 @@ end
 GRAPHICS-WINDOW
 227
 11
-996
-663
+993
+660
 -1
 -1
 8.0
@@ -279,7 +279,7 @@ CHOOSER
 aesthetic-quality-distribution
 aesthetic-quality-distribution
 "uniform" "random" "left-high" "right-high"
-3
+2
 
 SWITCH
 52
@@ -288,7 +288,7 @@ SWITCH
 457
 GB_influence?
 GB_influence?
-1
+0
 1
 -1000
 
@@ -2223,6 +2223,630 @@ NetLogo 6.0
     </enumeratedValueSet>
     <enumeratedValueSet variable="GB_influence?">
       <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="asd">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="45"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="ex7,w1,g20,al15" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="aesthetic-quality-distribution">
+      <value value="&quot;random&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="aq">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="GB_influence?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="asd">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="15"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="ex7,w1,g20,al30" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="aesthetic-quality-distribution">
+      <value value="&quot;random&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="aq">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="GB_influence?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="asd">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="30"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="ex7,w1,g20,al45" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="aesthetic-quality-distribution">
+      <value value="&quot;random&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="aq">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="GB_influence?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="asd">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="45"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="ex7,w1,g40,al15" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="aesthetic-quality-distribution">
+      <value value="&quot;random&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="aq">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="GB_influence?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="asd">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="15"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="ex7,w1,g40,al30" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="aesthetic-quality-distribution">
+      <value value="&quot;random&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="aq">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="GB_influence?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="asd">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="30"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="ex7,w1,g40,al45" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="aesthetic-quality-distribution">
+      <value value="&quot;random&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="aq">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="GB_influence?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="asd">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="45"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="ex7,w15,g20,al15" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="aesthetic-quality-distribution">
+      <value value="&quot;random&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="aq">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="GB_influence?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="asd">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="15"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="ex7,w15,g20,al30" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="aesthetic-quality-distribution">
+      <value value="&quot;random&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="aq">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="GB_influence?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="asd">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="30"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="ex7,w15,g20,al45" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="aesthetic-quality-distribution">
+      <value value="&quot;random&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="aq">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="GB_influence?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="asd">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="45"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="ex7,w15,g40,al15" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="aesthetic-quality-distribution">
+      <value value="&quot;random&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="aq">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="GB_influence?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="asd">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="15"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="ex7,w15,g40,al30" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="aesthetic-quality-distribution">
+      <value value="&quot;random&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="aq">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="GB_influence?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="asd">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="30"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="ex7,w15,g40,al45" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="aesthetic-quality-distribution">
+      <value value="&quot;random&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="aq">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="GB_influence?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="asd">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="45"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="ex8,w1,g20,al15" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="aesthetic-quality-distribution">
+      <value value="&quot;left-high&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="aq">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="GB_influence?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="asd">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="15"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="ex8,w1,g20,al30" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="aesthetic-quality-distribution">
+      <value value="&quot;left-high&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="aq">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="GB_influence?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="asd">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="30"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="ex8,w1,g20,al45" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="aesthetic-quality-distribution">
+      <value value="&quot;left-high&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="aq">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="GB_influence?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="asd">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="45"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="ex8,w1,g40,al15" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="aesthetic-quality-distribution">
+      <value value="&quot;left-high&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="aq">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="GB_influence?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="asd">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="15"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="ex8,w1,g40,al30" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="aesthetic-quality-distribution">
+      <value value="&quot;left-high&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="aq">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="GB_influence?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="asd">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="30"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="ex8,w1,g40,al45" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="aesthetic-quality-distribution">
+      <value value="&quot;left-high&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="aq">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="GB_influence?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="asd">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="45"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="ex8,w15,g20,al15" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="aesthetic-quality-distribution">
+      <value value="&quot;left-high&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="aq">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="GB_influence?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="asd">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="15"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="ex8,w15,g20,al30" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="aesthetic-quality-distribution">
+      <value value="&quot;left-high&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="aq">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="GB_influence?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="asd">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="30"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="ex8,w15,g20,al45" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="aesthetic-quality-distribution">
+      <value value="&quot;left-high&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="aq">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="GB_influence?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="asd">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="45"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="ex8,w15,g40,al15" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="aesthetic-quality-distribution">
+      <value value="&quot;left-high&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="aq">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="GB_influence?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="asd">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="15"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="ex8,w15,g40,al30" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="aesthetic-quality-distribution">
+      <value value="&quot;left-high&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="aq">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="GB_influence?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="asd">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="30"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="ex8,w15,g40,al45" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="aesthetic-quality-distribution">
+      <value value="&quot;left-high&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="aq">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="GB_influence?">
+      <value value="true"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="greenbelt-position">
       <value value="40"/>
