@@ -65,7 +65,7 @@ end
 GRAPHICS-WINDOW
 95
 10
-1169
+1351
 32
 -1
 -1
@@ -80,7 +80,7 @@ GRAPHICS-WINDOW
 0
 1
 0
-81
+95
 0
 0
 0
@@ -132,7 +132,7 @@ greenbelt-position
 greenbelt-position
 0
 count patches
-20.0
+40.0
 1
 1
 NIL
@@ -147,7 +147,7 @@ greenbelt-width
 greenbelt-width
 1
 20
-1.0
+15.0
 1
 1
 NIL
@@ -161,8 +161,8 @@ SLIDER
 available-locations
 available-locations
 1
-(count patches - 1 - greenbelt-width) / 4
-5.0
+25
+25.0
 1
 1
 NIL
@@ -663,6 +663,62 @@ NetLogo 6.0
     </enumeratedValueSet>
     <enumeratedValueSet variable="available-locations">
       <value value="15"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="1D,w1,g20,al25" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="25"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="1D,w1,g40,al25" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="25"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="1D,w15,g20,al25" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="25"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="1D,w15,g40,al25" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="25"/>
     </enumeratedValueSet>
   </experiment>
 </experiments>
