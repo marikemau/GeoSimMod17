@@ -138,8 +138,8 @@ end
 GRAPHICS-WINDOW
 227
 11
-886
-664
+996
+663
 -1
 -1
 8.0
@@ -153,7 +153,7 @@ GRAPHICS-WINDOW
 0
 1
 0
-81
+95
 0
 80
 0
@@ -205,7 +205,7 @@ greenbelt-position
 greenbelt-position
 0
 world-width
-20.0
+40.0
 1
 1
 NIL
@@ -220,7 +220,7 @@ greenbelt-width
 greenbelt-width
 1
 30
-1.0
+15.0
 1
 1
 NIL
@@ -235,7 +235,7 @@ available-locations
 available-locations
 1
 50
-15.0
+45.0
 1
 1
 NIL
