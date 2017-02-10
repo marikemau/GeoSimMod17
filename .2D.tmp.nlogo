@@ -75,7 +75,6 @@ to go
   ;; searching for available locations. In the paper they only used a sample size of 15
   let randomPatches n-of available-locations patches with [greenbelt = false and count turtles-here = 0]
 
-
   ;; TODO: add 10 patches for each tick
   ;; add new resident at best of the available locations
   let lastSprout min-one-of randomPatches [aq * asthetic-quality * distance-to-center + asd * distance-to-center * distance-to-center]
@@ -135,7 +134,7 @@ end
 GRAPHICS-WINDOW
 227
 11
-891
+1123
 668
 -1
 -1
@@ -150,7 +149,7 @@ GRAPHICS-WINDOW
 0
 1
 0
-81
+110
 0
 80
 0
@@ -217,7 +216,7 @@ greenbelt-width
 greenbelt-width
 1
 30
-1.0
+30.0
 1
 1
 NIL
@@ -247,7 +246,7 @@ aq
 aq
 0
 1
-1.0
+0.5
 0.5
 1
 NIL
@@ -262,7 +261,7 @@ asd
 asd
 0
 1
-1.0
+0.5
 0.5
 1
 NIL

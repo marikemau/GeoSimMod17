@@ -46,6 +46,19 @@ to go
   ;; selects random patches and places a turtle on the one with the highest aesthetic-quality
   let randomPatches n-of available-locations patches with [greenbelt = false and count turtles-here = 0]
   ask min-one-of randomPatches [utilityDistance] [sprout-residents 1 [set shape "person"] set pcolor 1]
+
+  if count residents with [inside = false] = 1
+  [
+   file-open "ticks_1D_results.csv"
+    file-write ticks
+    file-write greenbelt-width
+    file-write greenbelt-position
+    file-write available-locations
+    file-print " "
+    file-close
+    stop
+  ]
+
   tick
 end
 @#$#@#$#@
@@ -119,7 +132,7 @@ greenbelt-position
 greenbelt-position
 0
 count patches
-51.0
+20.0
 1
 1
 NIL
@@ -149,7 +162,7 @@ available-locations
 available-locations
 1
 (count patches - 1 - greenbelt-width) / 4
-4.0
+5.0
 1
 1
 NIL
@@ -539,6 +552,120 @@ NetLogo 6.0
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
+<experiments>
+  <experiment name="1D,w1,g20,al5" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="5"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="1D,w1,g20,al,15" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="15"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="1D,w1,g40,al5" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="5"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="1D,w1,g40,al15" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="15"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="1D,w15,g20,al5" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="5"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="1D,w15,g20,al15" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="15"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="1D,w15,g40,al5" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="5"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="1D,w15,g40,al15" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="15"/>
+    </enumeratedValueSet>
+  </experiment>
+</experiments>
 @#$#@#$#@
 @#$#@#$#@
 default

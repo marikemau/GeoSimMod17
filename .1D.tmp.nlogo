@@ -1,10 +1,10 @@
 ;;declaring patch variables
 patches-own [
-  distance-to-center
-  asthetic-quality
+  utilityDistance
   greenbelt
   inside
 ]
+
 ;;declaring agents
 breed [centers center]
 breed [residents resident]
@@ -14,17 +14,15 @@ to setup
   clear-all
 
   ;;model area:
-  resize-world 0 (80 + greenbelt-width) 0 80 ;; 1D model -> height = 1
+  resize-world 0 (80 + greenbelt-width) 0 0 ;; 1D model -> height = 1
 
   ;;call the patch functions:
   ask patches [set greenbelt false set inside true]
   ask patches [setup-greenbelt]
-  ask patches [setup-aesthetic-quality]
+  ask patches [setup-utilityDistance]
 
   ;;create the first service center:
-  create-centers 1 [setxy 0 (round (world-height / 2)) set color white set shape "house"]
-
-  ask patches [setup-distance]
+  create-centers 1 [setxy 0 0 set color white set shape "house"]
 
   reset-ticks
 end
@@ -35,69 +33,27 @@ to setup-greenbelt
   if pxcor >= (greenbelt-position) [ set inside false]
 end
 
-;;set the aesthetic-quality of the patches defined by user input
-to setup-aesthetic-quality
-  if aesthetic-quality-distribution = "uniform" [
-    set asthetic-quality 1
-  ]
-  if aesthetic-quality-distribution = "random" [
-    set asthetic-quality random-float 1
-  ]
-  if aesthetic-quality-distribution = "right-high" [
-    set asthetic-quality (((world-width + 1) / (pxcor + 1)) / (world-width + 1))
-  ]
-  if aesthetic-quality-distribution = "left-high" [
-    set asthetic-quality ((pxcor + 1) / (world-width + 1))
-  ]
-  if GB_influence?
-    [
-      if pxcor < greenbelt-position and pxcor = (greenbelt-position - 1) [ set asthetic-quality -1]
-      if pxcor < greenbelt-position and pxcor = (greenbelt-position - 2) [ set asthetic-quality -0.6]
-      if pxcor < greenbelt-position and pxcor = (greenbelt-position - 3) [ set asthetic-quality -0.3]
-
-
-      if pxcor > (greenbelt-position + (greenbelt-width)) and pxcor = (greenbelt-position + (greenbelt-width + 1)) [ set asthetic-quality -1]
-      if pxcor > (greenbelt-position + (greenbelt-width)) and pxcor = (greenbelt-position + (greenbelt-width + 2)) [ set asthetic-quality -0.6]
-      if pxcor > (greenbelt-position + (greenbelt-width)) and pxcor = (greenbelt-position + (greenbelt-width + 3)) [ set asthetic-quality -0.3]
-    ]
-end
-
 ;;calculate the distance from service centers
-to setup-distance
-  set distance-to-center distance min-one-of centers [distance myself]
+to setup-utilityDistance
+  set utilityDistance distancexy 0 0 * 0.5
 end
 
 ;;runs each tick
 to go
-  if (count patches - count turtles - ((greenbelt-width) * world-height) - available-locations) = 0 [
+  if (count patches - count residents - greenbelt-width - available-locations) = 0 [
     stop
   ]
-  ;; searching for available locations. In the paper they only used a sample size of 15
+  ;; selects random patches and places a turtle on the one with the highest aesthetic-quality
   let randomPatches n-of available-locations patches with [greenbelt = false and count turtles-here = 0]
+  ask min-one-of randomPatches [utilityDistance] [sprout-residents 1 [set shape "person"] set pcolor 1]
 
-  ;; TODO: add 10 patches for each tick
-  ;; add new resident at best of the available locations
-  let lastSprout min-one-of randomPatches [aq * asthetic-quality * distance-to-center + asd * distance-to-center * distance-to-center]
-  ask lastSprout [sprout-residents 1 [set shape "person"] set pcolor 1]
-
-  ;;everytime after 100 ticks 'set-new-center'
-  if ticks mod 100 = 0  and ticks != 0
+  if count residents with [inside = false] = 1
   [
-    set-new-center
-  ]
-
-  if count residents with [inside = false] = 300
-  [
-    file-open "ticks_2D_results.csv"
+   file-open "ticks_1D_results.csv"
     file-write ticks
     file-write greenbelt-width
-    file-write aq
-    file-write asd
     file-write greenbelt-position
     file-write available-locations
-    file-write aesthetic-quality-distribution
-    file-write GB_influence?
-    file-write count centers with [inside = false]
     file-print " "
     file-close
     stop
@@ -105,40 +61,15 @@ to go
 
   tick
 end
-
-;;creating new service centers
-to set-new-center
-    ;; take the last placed resident
-    let x true
-    let i 0
-    let y count turtles - 1
-    while [x]
-      [ask turtle y [
-        ;; if this resident has free space in neighbourhood, place center else, otherwise place center randomly inside
-        ifelse sum [count turtles-here] of neighbors < count neighbors with [greenbelt = false]
-          [
-            ask one-of neighbors with [greenbelt = false and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]
-            set x false
-          ]
-          [
-            set i i + 1
-            set y y - i
-          ]
-      ]
-      ]
-
-    ;; recalculate distance
-    ask patches [setup-distance]
-end
 @#$#@#$#@
 GRAPHICS-WINDOW
-227
-11
-1123
-668
+95
+10
+1169
+32
 -1
 -1
-8.0
+13.0
 1
 10
 1
@@ -149,9 +80,9 @@ GRAPHICS-WINDOW
 0
 1
 0
-110
+81
 0
-80
+0
 0
 0
 1
@@ -200,8 +131,8 @@ SLIDER
 greenbelt-position
 greenbelt-position
 0
-world-width
-46.0
+count patches
+20.0
 1
 1
 NIL
@@ -215,8 +146,8 @@ SLIDER
 greenbelt-width
 greenbelt-width
 1
-30
-30.0
+20
+15.0
 1
 1
 NIL
@@ -230,70 +161,19 @@ SLIDER
 available-locations
 available-locations
 1
-80
-15.0
+25
+25.0
 1
 1
 NIL
 HORIZONTAL
-
-SLIDER
-23
-251
-195
-284
-aq
-aq
-0
-1
-0.5
-0.5
-1
-NIL
-HORIZONTAL
-
-SLIDER
-17
-308
-189
-341
-asd
-asd
-0
-1
-0.5
-0.5
-1
-NIL
-HORIZONTAL
-
-CHOOSER
-4
-356
-212
-401
-aesthetic-quality-distribution
-aesthetic-quality-distribution
-"uniform" "random" "left-high" "right-high"
-0
-
-SWITCH
-52
-424
-208
-457
-GB_influence?
-GB_influence?
-0
-1
--1000
 
 PLOT
-1140
-17
-1482
-258
-Utiliy of occupied patches
+339
+69
+704
+351
+Utility of selected patches
 NIL
 NIL
 0.0
@@ -304,16 +184,16 @@ true
 false
 "" ""
 PENS
-"sum of occupied p." 1.0 0 -14070903 true "" "let occupied patches with [ pcolor = 1 ]\nplot sum [aq * asthetic-quality * distance-to-center + asd * distance-to-center * distance-to-center] of occupied"
+"sum of occupied p." 1.0 0 -13345367 true "" "let occupied patches with [ pcolor = white ]\nplot sum [utilityDistance] of occupied"
 
 PLOT
-1139
-265
-1485
-526
+777
+68
+1133
+354
 occupied patches
-NIL
-NIL
+ticks
+patches
 0.0
 10.0
 0.0
@@ -673,30 +553,158 @@ NetLogo 6.0
 @#$#@#$#@
 @#$#@#$#@
 <experiments>
-  <experiment name="experiment" repetitions="100" runMetricsEveryStep="true">
+  <experiment name="1D,w1,g20,al5" repetitions="30" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
-    <metric>count turtles</metric>
-    <enumeratedValueSet variable="aesthetic-quality-distribution">
-      <value value="&quot;random&quot;"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="aq">
-      <value value="0.5"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="GB_influence?">
-      <value value="false"/>
-    </enumeratedValueSet>
+    <metric>ticks</metric>
     <enumeratedValueSet variable="greenbelt-position">
-      <value value="46"/>
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="5"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="1D,w1,g20,al,15" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="15"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="1D,w1,g40,al5" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="5"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="1D,w1,g40,al15" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="15"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="1D,w15,g20,al5" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="20"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="greenbelt-width">
       <value value="15"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="asd">
-      <value value="0.5"/>
+    <enumeratedValueSet variable="available-locations">
+      <value value="5"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="1D,w15,g20,al15" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="15"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="available-locations">
-      <value value="41"/>
+      <value value="15"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="1D,w15,g40,al5" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="5"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="1D,w15,g40,al15" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="15"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="1D,w1,g20,al25" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="25"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="1D,w1,g40,al25" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="25"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="1D,w15,g20,al25" repetitions="30" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="greenbelt-position">
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="greenbelt-width">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="available-locations">
+      <value value="25"/>
     </enumeratedValueSet>
   </experiment>
 </experiments>
