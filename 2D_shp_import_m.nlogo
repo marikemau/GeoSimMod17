@@ -7,6 +7,7 @@ globals [greenbelt]
 patches-own [
   distance-to-center
   asthetic-quality
+  inside_greenbelt
   inside
 ]
 
@@ -26,7 +27,10 @@ to setup
   setup-greenbelt-area
 
   ;;create the first service center:
-  create-centers 1 [setxy 0 0 set color white set shape "house"]
+  if Choose-Shapefile = "greenbelt" [ create-centers 1 [setxy round(world-width / 2) 80 set color white set shape "house"]]
+  if Choose-Shapefile = "promenade" [ create-centers 1 [setxy round(world-height / 2) round(world-width / 2) set color white set shape "house"]]
+  if Choose-Shapefile = "triangle"  [ create-centers 1 [setxy round(world-height / 2) round(world-width / 2) set color white set shape "house"]]
+
   ask patches [setup-distance]
 
   reset-ticks
@@ -47,91 +51,128 @@ end
 
 ;; method to create greenbelt patches on basis of the shp
 to setup-greenbelt-area
-  ask patches [ set pcolor black set inside false]
-  ask patches gis:intersecting greenbelt
-  [ set pcolor green set inside true]
+  ask patches [ set pcolor black set inside_greenbelt false set inside true]
+  ask patches gis:intersecting greenbelt[ set pcolor green set inside_greenbelt true]
+  if Choose-Shapefile = "promenade"
+  [
+    ;;for case "promenade" set all patches to inside false, which are not inside the promeande
+    ;;inside promenade is "simular" to left of the greenbelt in the paper
+    ;;outside promenade is right of the greenbelt
+    ;; this is set manually
+  ask patches [ if pycor >= 65  [set inside false ]]
+  ask patches [ if pycor >= 61 and pxcor < 59 and pcolor != green [set inside false ]]
+  ask patches [ if pycor >= 60 and pxcor < 52 and pcolor != green [set inside false ]]
+  ask patches [ if pycor >= 58 and pxcor < 39 and pcolor != green [set inside false ]]
+  ask patches [ if pycor >= 56 and pxcor < 18 and pcolor != green [set inside false ]]
+  ask patches [ if pycor >= 54 and pxcor < 10 and pcolor != green [set inside false ]]
+  ask patches [ if pycor >= 52 and pxcor < 8 and pcolor != green [set inside false ]]
+  ask patches [ if pycor >= 45 and pxcor < 7 and pcolor != green [set inside false ]]
+  ask patches [ if pycor >= 40 and pxcor < 3 and pcolor != green [set inside false ]]
+  ask patches [ if pycor >= 39 and pxcor < 2 and pcolor != green [set inside false ]]
+  ask patches [ if pycor >= 30 and pxcor < 1 and pcolor != green [set inside false ]]
+  ask patches [ if pycor >= 65 and pxcor > 60 and pcolor != green [set inside false ]]
+  ask patches [ if pycor >= 54 and pxcor > 73  and pcolor != green [set inside false ]]
+  ask patches [ if pycor >= 49 and pxcor > 78 and pcolor != green [set inside false ]]
+  ask patches [ if pycor >= 20 and pxcor > 79 and pcolor != green [set inside false ]]
+  ask patches [ if pxcor >= 76 and pycor < 27 and pcolor != green [set inside false ]]
+  ask patches [ if pxcor >= 72 and pycor < 25 and pcolor != green [set inside false ]]
+  ask patches [ if pxcor >= 70 and pycor < 22 and pcolor != green [set inside false ]]
+  ask patches [ if pxcor >= 65 and pycor < 20 and pcolor != green [ set inside false ]]
+  ask patches [ if pycor <= 15 and pcolor != green [set inside false ]]
+  ask patches [ if pxcor <= 15 and pycor < 20 and pcolor != green [set inside false ]]
+  ask patches [ if pxcor <= 8 and pycor < 22 and pcolor != green [set inside false ]]
+  ask patches [ if pxcor <= 5 and pycor < 24 and pcolor != green [ set inside false ]]
+  ask patches [ if pxcor <= 3 and pycor < 30 and pcolor != green [ set inside false ]]
+  ask patches [ if pxcor <= 1 and pycor < 35 and pcolor != green [ set inside false ]]
+  ]
+
 end
 
 
 
-;; TODO: change to distance center
+;; setup asthetic-quality-distribution like paper
+;; only these two cases
 to setup-asthetic-quality
-  set asthetic-quality distancexy 0 0 * 0.5
+  if aesthetic-quality-distribution = "uniform" [
+    set asthetic-quality 0
+  ]
+  if aesthetic-quality-distribution = "random" [
+    set asthetic-quality random-float 1
+  ]
+
 end
 
 ;;calculate the distance from service centers
 to setup-distance
-  set distance-to-center distance min-one-of centers [distance myself]
+  let dist distance min-one-of centers [distance myself]
+  if dist != 0
+  [
+    set distance-to-center 1 / dist
+  ]
 end
 
 ;;creating new service centers
 to set-new-center
-  ;; add new center each 10 timesteps
-  if ticks mod 100 = 0 [
     ;; take the last placed resident
-    ask max-one-of residents [who] [
-      ;; if this resident has free space in neighbourhood, place center else, otherwise place center randomly inside
-
-      ifelse sum [count turtles-here] of neighbors with [inside = false] < 8
-      [
-        ifelse sum [count turtles-here] of neighbors with [inside = false] < 5
-        [
-          ifelse sum [count turtles-here] of neighbors with [inside = false] < 3
+    let x true
+    let i 0
+    let y count turtles - 1
+    show y
+    while [x]
+      [ask turtle y [
+        show y
+        ;; if this resident has free space in neighbourhood, place center else, otherwise place center randomly inside_greenbelt
+        ifelse sum [count turtles-here] of neighbors < count neighbors with [inside_greenbelt = false]
           [
-            ask one-of neighbors with [inside = false and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]
+            ask one-of neighbors with [inside_greenbelt = false and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]
+            set x false
           ]
           [
-            ;; else < 3
+            set i i + 1
+            set y y - i
           ]
-        ]
-        [
-          ;; else < 5
-        ]
       ]
-      [
-        ;; else < 8
-        ask one-of patches with [inside = false and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]
       ]
 
-
-      ask one-of neighbors with [inside = false and count turtles-here = 0] [sprout-centers 1 [set color white set shape "house"]]
-    ]
     ;; recalculate distance
     ask patches [setup-distance]
-  ]
 end
 
 ;runs each tick
 to go
-  if (count patches - count residents - count centers - available-locations) = 0 [
+  ;; if (count patches - count turtles - ((greenbelt-width) * world-height) - available-locations) = 0
+  if (count patches - count residents - count centers - (count patches with [pcolor = green]) - available-locations ) = 0 [
     stop
   ]
   ;; searching for 15 locations in paper
-  let randomPatches n-of available-locations patches with [inside = false and count turtles-here = 0]
 
-  ;; TODO: add 10 patches for each tick
+  let randomPatches n-of available-locations patches with [inside_greenbelt = false and count turtles-here = 0]
+
+
   ;; add new resident at best of the available locations
-  let lastSprout min-one-of randomPatches [aq * asthetic-quality * distance-to-center + asd * distance-to-center * distance-to-center]
-  ask lastSprout [sprout-residents 1]
+  let lastSprout max-one-of randomPatches [aq * asthetic-quality * distance-to-center + asd * distance-to-center * distance-to-center]
+  ask lastSprout [sprout-residents 1 [set shape "person"] set pcolor 1]
 
-  set-new-center
-
+    if ticks mod 100 = 0  and ticks != 0
+  [
+    set-new-center
+  ]
+     if count residents with [inside = false] = 300
+  [
+    file-open "ticks_2Dshape_results.csv"
+    file-write ticks
+    file-write greenbelt
+    file-write aq
+    file-write asd
+    file-write available-locations
+    file-write aesthetic-quality-distribution
+    file-write count centers with [inside = false]
+    file-print " "
+    file-close
+    stop
+  ]
   tick
 end
-
-;to go
-;  ;; TODO revisit if statement: removed greenbelt width
-;  if (900 - count residents - available-locations) = 0 [
-;    stop
-;  ]
-;
-;  let randomPatches n-of available-locations patches with [inside = false and count turtles-here = 0]
-;
-;  ;; TODO: add 10 patches for each tick
-;  ask min-one-of randomPatches [asthetic-quality] [sprout-residents 1]
-;
-;  tick
-;end
 @#$#@#$#@
 GRAPHICS-WINDOW
 200
@@ -201,9 +242,9 @@ SLIDER
 115
 available-locations
 available-locations
-0
+1
 80
-14.0
+45.0
 1
 1
 NIL
@@ -217,7 +258,7 @@ CHOOSER
 Choose-Shapefile
 Choose-Shapefile
 "promenade" "greenbelt" "triangle"
-2
+0
 
 SLIDER
 20
@@ -248,6 +289,16 @@ asd
 1
 NIL
 HORIZONTAL
+
+CHOOSER
+1
+290
+209
+335
+aesthetic-quality-distribution
+aesthetic-quality-distribution
+"uniform" "random"
+0
 
 @#$#@#$#@
 ## WHAT IS IT?
